@@ -121,6 +121,11 @@ html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
 .rocket-card img{width:48px;height:auto;filter:invert(1);opacity:.85}
 .rocket-card p{font-size:12px;color:#d8d5c9;margin:0}
 
+.mission-log{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.ml-clock{font-family:var(--font-mono);font-size:15px;letter-spacing:1.5px;color:var(--accent);margin-bottom:8px}
+.ml-fact{font-size:12px;color:#d8d5c9;line-height:1.6;min-height:44px;transition:opacity .5s ease}
+.ml-fact.fade{opacity:0}
+
 @media(max-width:900px){ .panel-side{display:none} .panel-copy{grid-template-columns:1fr} }
 
 /* ═══════════════════════════════════════════════════
@@ -149,18 +154,102 @@ html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
    NEWS SECTION
 ═══════════════════════════════════════════════════ */
 .news-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:8px;max-width:1000px}
-.news-card{border:1px solid var(--line);border-radius:4px;background:rgba(255,255,255,.02);overflow:hidden;display:flex;flex-direction:column;transition:border-color .25s ease}
+.news-card{border:1px solid var(--line);border-radius:4px;background:rgba(255,255,255,.02);overflow:hidden;display:flex;flex-direction:column;transition:border-color .25s ease;position:relative}
 .news-card:hover{border-color:var(--accent)}
 .news-card .news-media{width:100%;aspect-ratio:16/9;background:#000;position:relative}
 .news-card .news-media iframe{width:100%;height:100%;border:0}
 .news-card .news-media img{width:100%;height:100%;object-fit:cover}
 .news-card .news-pdf-link{display:flex;align-items:center;justify-content:center;gap:8px;height:100%;color:var(--ink-dim);font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:1px}
 .news-card .news-pdf-link:hover{color:var(--accent)}
+.latest-badge{position:absolute;top:12px;left:12px;z-index:2;background:var(--accent);color:#020202;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:4px 9px;border-radius:2px}
 .news-body{padding:16px 18px}
 .news-date{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1px;color:var(--accent);text-transform:uppercase;margin-bottom:8px;display:block}
 .news-card h3{font-family:var(--font-display);font-size:16px;font-weight:600;margin-bottom:8px;line-height:1.3}
 .news-card p{font-size:13px;color:var(--ink-dim);line-height:1.6}
 @media(max-width:900px){ .news-grid{grid-template-columns:1fr} }
+
+/* Profile icon in navbar */
+.profile-btn{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:16px}
+.profile-btn:hover{border-color:var(--accent);color:var(--accent)}
+.profile-btn svg{width:16px;height:16px}
+.profile-pop{position:fixed;top:70px;right:24px;z-index:250;width:260px;background:rgba(4,4,4,.96);border:1px solid var(--line);border-radius:6px;padding:18px;backdrop-filter:blur(14px);display:none;box-shadow:0 12px 32px rgba(0,0,0,.5)}
+.profile-pop.open{display:block}
+.profile-pop .empty{font-size:12.5px;color:var(--ink-dim);line-height:1.6}
+.profile-pop .empty a{color:var(--accent)}
+
+/* ═══════════════════════════════════════════════════
+   MISSION LAB
+═══════════════════════════════════════════════════ */
+.lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px;max-width:900px}
+.lab-card{border:1px solid var(--line);border-radius:6px;background:rgba(255,255,255,.02);padding:22px}
+.lab-card h3{font-family:var(--font-display);font-size:16px;margin-bottom:6px}
+.lab-card>p{font-size:13px;color:var(--ink-dim);margin-bottom:16px}
+
+.signal-area{position:relative;height:220px;border:1px solid var(--line);border-radius:6px;background:radial-gradient(ellipse at center, rgba(255,176,0,.05) 0%, rgba(0,0,0,.6) 70%);overflow:hidden}
+.signal-area::before{content:'';position:absolute;inset:0;background-image:repeating-radial-gradient(circle at center, transparent 0, transparent 27px, rgba(255,176,0,.08) 28px);pointer-events:none}
+.signal-area::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:linear-gradient(90deg, transparent, rgba(255,176,0,.4), transparent);animation:radar-sweep 3s linear infinite;transform-origin:center}
+@keyframes radar-sweep{0%{transform:translateY(-90px) rotate(0deg)}100%{transform:translateY(-90px) rotate(360deg)}}
+.signal-target{position:absolute;width:32px;height:32px;border-radius:50%;background:radial-gradient(circle, var(--accent) 0%, rgba(255,176,0,.7) 60%, transparent 100%);box-shadow:0 0 0 0 rgba(255,176,0,.5);border:1px solid rgba(255,255,255,.5);cursor:pointer;animation:target-pulse 1.1s ease-out infinite}
+@keyframes target-pulse{0%{box-shadow:0 0 0 0 rgba(255,176,0,.5)}70%{box-shadow:0 0 0 16px rgba(255,176,0,0)}100%{box-shadow:0 0 0 0 rgba(255,176,0,0)}}
+.signal-hud{display:flex;justify-content:space-between;align-items:center;margin:12px 0;font-family:var(--font-mono);font-size:12px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:1px}
+.signal-hud span.val{color:var(--accent);font-size:15px}
+.mission-badge{border:1px solid var(--accent);border-radius:6px;padding:18px;background:linear-gradient(160deg, rgba(255,176,0,.08), rgba(255,255,255,.02));display:none}
+.mission-badge.show{display:block}
+.mission-badge .mb-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.mission-badge .mb-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase}
+.mission-badge h4{font-family:var(--font-display);font-size:20px;margin:4px 0}
+.mission-badge .mb-row{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--ink-dim);text-transform:uppercase;padding-top:8px;border-top:1px solid var(--line);margin-top:10px}
+@media(max-width:900px){ .lab-grid{grid-template-columns:1fr} }
+
+/* ═══════════════════════════════════════════════════
+   SOLAR SYSTEM CARDS
+═══════════════════════════════════════════════════ */
+.planet-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:8px;max-width:1100px}
+.planet-card{border:1px solid var(--line);border-radius:6px;padding:16px;background:rgba(255,255,255,.02);transition:border-color .25s ease}
+.planet-card:hover{border-color:var(--accent)}
+.planet-card .p-name{font-family:var(--font-display);font-size:16px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.planet-card .p-swatch{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.planet-card .p-fact{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-dim);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.planet-card .p-fact span:last-child{color:var(--ink)}
+.planet-card .p-live{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.planet-card .p-live-row{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.planet-card .p-live-row b{color:var(--accent);font-size:12px}
+@media(max-width:900px){ .planet-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media(max-width:560px){ .planet-grid{grid-template-columns:1fr} }
+
+/* ═══════════════════════════════════════════════════
+   AUTH MODAL
+═══════════════════════════════════════════════════ */
+.auth-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,2,3,.85);z-index:400;padding:20px}
+.auth-modal.open{display:flex}
+.auth-modal-content{width:min(380px,100%);background:rgba(6,6,6,.96);border:1px solid var(--line);border-radius:8px;padding:26px;position:relative;backdrop-filter:blur(14px)}
+.auth-modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--ink-dim);font-size:22px;cursor:pointer;line-height:1}
+.auth-tabs{display:flex;gap:0;margin-bottom:20px;border-bottom:1px solid var(--line)}
+.auth-tab{flex:1;padding:10px;background:none;border:none;color:var(--ink-dim);font-family:var(--font-mono);font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent}
+.auth-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.auth-form{display:grid;gap:14px}
+.auth-form label{display:flex;flex-direction:column;font-family:var(--font-mono);font-size:11px;letter-spacing:.5px;color:var(--ink);text-transform:uppercase}
+.auth-form input{margin-top:6px;padding:11px;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#fff;font-family:var(--font-body);font-size:14px;border-radius:2px}
+.auth-form input:focus{outline:1px solid var(--accent)}
+.auth-form .btn{width:100%;text-align:center;cursor:pointer}
+.auth-error{font-size:12px;color:#ff6b6b;min-height:16px;margin-top:4px}
+
+/* ═══════════════════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════════════════ */
+.dash-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:24px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.dash-header-left{display:flex;align-items:center;gap:16px}
+.dash-avatar{width:54px;height:54px;border-radius:50%;background:linear-gradient(160deg, rgba(255,176,0,.25), rgba(255,255,255,.04));border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--accent);flex-shrink:0}
+.dash-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:640px;margin-bottom:16px}
+.dash-stat{position:relative;border:1px solid var(--line);border-radius:6px;padding:18px 16px;text-align:center;background:rgba(255,255,255,.015);overflow:hidden}
+.dash-stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);opacity:.6}
+.dash-stat span{display:block;font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.dash-stat label{font-family:var(--font-mono);font-size:10px;letter-spacing:1.2px;color:var(--ink-dim);text-transform:uppercase}
+.paper-list{list-style:none;max-width:600px;margin-top:8px}
+.paper-list li{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border:1px solid var(--line);border-radius:4px;margin-bottom:8px;font-size:13px}
+.paper-list li a{color:var(--accent)}
+.paper-list li.empty-note{color:var(--ink-dim);border-style:dashed}
+@media(max-width:640px){ .dash-stats{grid-template-columns:1fr} }
 
 /* ═══════════════════════════════════════════════════
    CONNECT ACCOUNTS
@@ -232,10 +321,48 @@ html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
 
 <nav class="navbar" id="navbar">
   <div class="nav-brand"><span class="dot"></span>SPACENAUTICS</div>
+  <div style="display:flex;align-items:center">
   <button class="hbg" type="button" id="hbg-btn" aria-label="Open menu" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
+  <button class="profile-btn" id="profile-btn" aria-label="Profile">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.5-4 5-5.5 7.5-5.5s6 1.5 7.5 5.5"/></svg>
+  </button>
+  </div>
 </nav>
+
+<div class="profile-pop" id="profile-pop">
+  <div id="profile-pop-body" class="empty">Loading…</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     LOGIN / REGISTER MODAL — backed by Firebase Auth.
+     See the setup comment near the bottom script for the
+     3 steps needed before this works (create Firebase
+     project, enable Email/Password auth, paste config).
+═══════════════════════════════════════════════════ -->
+<div class="auth-modal" id="auth-modal" aria-hidden="true">
+  <div class="auth-modal-content">
+    <button class="auth-modal-close" id="auth-modal-close" aria-label="Close">×</button>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" type="button">Log In</button>
+      <button class="auth-tab" id="tab-register" type="button">Register</button>
+    </div>
+    <form id="login-form" class="auth-form">
+      <label>Email<input type="email" id="login-email" required></label>
+      <label>Password<input type="password" id="login-password" required></label>
+      <button type="submit" class="btn">LOG IN</button>
+      <div class="auth-error" id="login-error"></div>
+    </form>
+    <form id="register-form" class="auth-form" style="display:none">
+      <label>Name<input type="text" id="register-name" required></label>
+      <label>Email<input type="email" id="register-email" required></label>
+      <label>Password<input type="password" id="register-password" minlength="6" required></label>
+      <button type="submit" class="btn">CREATE ACCOUNT</button>
+      <div class="auth-error" id="register-error"></div>
+    </form>
+  </div>
+</div>
 
 <div class="menu-ov" id="menu" aria-hidden="true">
   <button class="menu-close" type="button" id="menu-close" aria-label="Close menu">×</button>
@@ -245,7 +372,10 @@ html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
   <a href="#agi-no">Helix Nebula</a>
   <a href="#approach">Solar Flares</a>
   <a href="#vision">Our Mission</a>
+  <a href="#solar-system">Solar System</a>
   <a href="#news">News</a>
+  <a href="#lab">Mission Lab</a>
+  <a href="#dashboard">Dashboard</a>
   <a href="#connect">Connect</a>
   <a href="#feedback">Contact</a>
 </div>
@@ -289,6 +419,10 @@ html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
   <div class="panel-side">
     <h3>Black Hole Notes</h3>
     <p>Nothing that crosses the event horizon returns — not matter, not light, not information in any recoverable form.</p>
+    <div class="mission-log">
+      <div class="ml-clock" id="ml-clock">00:00:00 UTC</div>
+      <div class="ml-fact" id="ml-fact">Loading mission log…</div>
+    </div>
   </div>
 </section>
 
@@ -381,7 +515,23 @@ html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
     <span class="eyebrow">Xonexa AGI</span>
     <h2>Our Ultimate Mission</h2>
     <p>Xonexa AGI is not built to automate human text or optimize administrative workflows. We are building a self-evolving, autonomous intellect designed to expand the frontiers of scientific knowledge — moving beyond the statistics of words into the architecture of absolute comprehension.</p>
-    <a class="btn" href="#news">CONTINUE</a>
+    <a class="btn" href="#solar-system">CONTINUE</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SOLAR SYSTEM — real orbital/rotation data per planet.
+     The two numbers at the bottom of each card are live:
+     genuinely computed every second from each planet's
+     real day-length and orbital period (not fabricated
+     telemetry), so they keep ticking as you watch.
+═══════════════════════════════════════════════════ -->
+<section class="panel panel-tall starfield" id="solar-system" data-bg="">
+  <div class="panel-in">
+    <span class="eyebrow">Live Data</span>
+    <h2>The Solar System</h2>
+    <p>Real figures for each planet, plus a live counter of how many of that planet's own days and years have ticked by since 1 Jan 1970 — calculated from its actual rotation and orbital period.</p>
+    <div class="planet-grid" id="planet-grid"></div>
   </div>
 </section>
 
@@ -399,6 +549,7 @@ html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
 
       <!-- TEXT CARD -->
       <article class="news-card">
+        <span class="latest-badge">Latest</span>
         <div class="news-body">
           <span class="news-date">Jan 2026</span>
           <h3>Sample headline goes here</h3>
@@ -433,6 +584,75 @@ html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
         </div>
       </article>
 
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     MISSION LAB — "Signal Lock" reflex game.
+═══════════════════════════════════════════════════ -->
+<section class="panel panel-tall starfield" id="lab" data-bg="">
+  <div class="panel-in">
+    <span class="eyebrow">Mission Lab</span>
+    <h2>Signal Lock</h2>
+    <p>Click the beacon before it moves. 15 seconds on the clock.</p>
+    <div class="lab-card" style="max-width:460px">
+      <div class="signal-hud">
+        <span>Score: <span class="val" id="signal-score">0</span></span>
+        <span>Time: <span class="val" id="signal-time">15</span>s</span>
+      </div>
+      <div class="signal-area" id="signal-area">
+        <button class="signal-target" id="signal-target" style="display:none" aria-label="Target"></button>
+      </div>
+      <div style="margin-top:14px">
+        <a class="btn" href="#" id="signal-start" style="padding:9px 20px;font-size:11px">START</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     DASHBOARD — visible after logging in. Styled after
+     the "Welcome Back" NASA STEM Gateway look. Paper
+     upload needs Firebase Storage, which requires your
+     Firebase project to be on the Blaze (pay-as-you-go)
+     plan — still free under normal usage, but needs a
+     billing card on file. See setup notes near the script.
+═══════════════════════════════════════════════════ -->
+<section class="panel panel-tall starfield" id="dashboard" data-bg="">
+  <div class="panel-in">
+    <div id="dash-guest">
+      <span class="eyebrow">Dashboard</span>
+      <h2>Log In To See Your Dashboard</h2>
+      <p>Use the profile icon in the top-right to log in or create an account.</p>
+    </div>
+    <div id="dash-user" style="display:none">
+      <div class="dash-header">
+        <div class="dash-header-left">
+          <div class="dash-avatar" id="dash-avatar">C</div>
+          <div>
+            <span class="eyebrow" style="margin-bottom:6px">Welcome Back</span>
+            <h2 id="dash-name" style="margin-bottom:0">Cadet</h2>
+          </div>
+        </div>
+        <button class="btn" id="dash-logout" style="padding:9px 20px;font-size:11px">LOG OUT</button>
+      </div>
+      <div class="dash-stats">
+        <div class="dash-stat"><span id="dash-count-papers">0</span><label>Papers Uploaded</label></div>
+        <div class="dash-stat"><span id="dash-joined">—</span><label>Joined</label></div>
+        <div class="dash-stat"><span>Active</span><label>Status</label></div>
+      </div>
+
+      <h3 class="sub-h">Upload Research Paper</h3>
+      <form id="paper-form" class="feedback-form" style="max-width:520px">
+        <label>Title<input type="text" id="paper-title" placeholder="Paper title" required></label>
+        <label>File (PDF)<input type="file" id="paper-file" accept="application/pdf" required></label>
+        <button type="submit">Upload</button>
+      </form>
+      <div class="auth-error" id="paper-error"></div>
+
+      <h3 class="sub-h">My Papers</h3>
+      <ul id="paper-list" class="paper-list"><li class="empty-note">No papers uploaded yet.</li></ul>
     </div>
   </div>
 </section>
@@ -559,12 +779,13 @@ html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
   const result = document.getElementById('feedback-result');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    if(window.__spacenauticsUseFirestore) return; // handled by the Firebase module script instead
     const name = document.getElementById('fb-name').value.trim();
     const email = document.getElementById('fb-email').value.trim();
     const message = document.getElementById('fb-message').value.trim();
     const subject = encodeURIComponent(`SPACENAUTICS Contact — ${name}`);
     const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-    result.textContent = `Preview:\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}\n\nYour mail app will now open — review and send.`;
+    result.textContent = `Preview:\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}\n\nYour mail app will now open — review and send.\n\n(Once Firebase is set up, messages will be saved automatically instead — no email app needed.)`;
     result.classList.add('show');
     window.location.href = `mailto:hello@spacenautics.space?subject=${subject}&body=${body}`;
   });
@@ -627,7 +848,327 @@ html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
 
   chatSend.addEventListener('click', sendMessage);
   chatInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') sendMessage(); });
+
+  // ── Profile button: opens login/register modal, or the
+  //    account popover, depending on Firebase auth state
+  //    (state is tracked by the module script below) ──
+  const profileBtn = document.getElementById('profile-btn');
+  const profilePop = document.getElementById('profile-pop');
+  const authModal = document.getElementById('auth-modal');
+
+  profileBtn.addEventListener('click', () => {
+    if(window.__spacenauticsUser){
+      profilePop.classList.toggle('open');
+    } else {
+      authModal.classList.add('open');
+      authModal.setAttribute('aria-hidden','false');
+    }
+  });
+  document.addEventListener('click', (e) => {
+    if(!profilePop.contains(e.target) && e.target !== profileBtn && !profileBtn.contains(e.target)) profilePop.classList.remove('open');
+  });
+
+
+  // ── Signal Lock mini-game ──
+  const signalArea = document.getElementById('signal-area');
+  const signalTarget = document.getElementById('signal-target');
+  const signalScoreEl = document.getElementById('signal-score');
+  const signalTimeEl = document.getElementById('signal-time');
+  const signalStart = document.getElementById('signal-start');
+  let signalScore = 0, signalTimeLeft = 15, signalTimerId = null, signalRunning = false;
+
+  function placeTarget(){
+    const w = signalArea.clientWidth - 34, h = signalArea.clientHeight - 34;
+    signalTarget.style.left = Math.max(0, Math.random() * w) + 'px';
+    signalTarget.style.top = Math.max(0, Math.random() * h) + 'px';
+  }
+  function endGame(){
+    signalRunning = false;
+    clearInterval(signalTimerId);
+    signalTarget.style.display = 'none';
+  }
+  function startGame(){
+    if(signalRunning) return;
+    signalRunning = true;
+    signalScore = 0; signalTimeLeft = 15;
+    signalScoreEl.textContent = '0'; signalTimeEl.textContent = '15';
+    signalTarget.style.display = 'block';
+    placeTarget();
+    signalTimerId = setInterval(() => {
+      signalTimeLeft--;
+      signalTimeEl.textContent = signalTimeLeft;
+      if(signalTimeLeft <= 0) endGame();
+    }, 1000);
+  }
+  signalStart.addEventListener('click', (e) => { e.preventDefault(); startGame(); });
+  signalTarget.addEventListener('click', () => {
+    if(!signalRunning) return;
+    signalScore++;
+    signalScoreEl.textContent = signalScore;
+    placeTarget();
+  });
+
+  // ── Mission Log: live UTC clock + rotating facts ──
+  const mlClock = document.getElementById('ml-clock');
+  const mlFact = document.getElementById('ml-fact');
+  if(mlClock && mlFact){
+    function tickClock(){
+      const d = new Date();
+      mlClock.textContent = d.toISOString().substring(11,19) + ' UTC';
+    }
+    tickClock();
+    setInterval(tickClock, 1000);
+
+    const facts = [
+      "Light from the Sun takes about 8 minutes and 20 seconds to reach Earth.",
+      "A neutron star's teaspoon of matter would weigh about a billion tons on Earth.",
+      "The observable universe is roughly 93 billion light-years in diameter.",
+      "Voyager 1, launched in 1977, is now over 24 billion km from Earth.",
+      "There are more stars in the universe than grains of sand on every beach on Earth.",
+      "One day on Venus is longer than one year on Venus.",
+      "The largest known star, UY Scuti, could fit roughly 5 billion Suns inside it.",
+      "Saturn's density is low enough that it would float in water, if you could find an ocean big enough."
+    ];
+    let factIndex = 0;
+    function showFact(i){
+      mlFact.classList.add('fade');
+      setTimeout(() => { mlFact.textContent = facts[i]; mlFact.classList.remove('fade'); }, 400);
+    }
+    showFact(factIndex);
+    setInterval(() => { factIndex = (factIndex + 1) % facts.length; showFact(factIndex); }, 6000);
+  }
+
+  // ── Solar System: real data + genuinely live day/year counters ──
+  const planetGrid = document.getElementById('planet-grid');
+  if(planetGrid){
+    const planets = [
+      { name:"Mercury", color:"#b8b0a8", distance:"57.9M km", day:"176 Earth days", year:"88 Earth days", moons:"0", dayHrs:176*24, yearDays:88 },
+      { name:"Venus",   color:"#e8c37a", distance:"108.2M km", day:"117 Earth days", year:"225 Earth days", moons:"0", dayHrs:117*24, yearDays:225 },
+      { name:"Earth",   color:"#5b9bd5", distance:"149.6M km", day:"24 hours", year:"365.25 days", moons:"1", dayHrs:24, yearDays:365.25 },
+      { name:"Mars",    color:"#c1440e", distance:"227.9M km", day:"24.6 hours", year:"687 Earth days", moons:"2", dayHrs:24.6, yearDays:687 },
+      { name:"Jupiter", color:"#d8b48c", distance:"778.5M km", day:"9.9 hours", year:"11.9 Earth years", moons:"100+", dayHrs:9.9, yearDays:4333 },
+      { name:"Saturn",  color:"#e3c78a", distance:"1.43B km", day:"10.7 hours", year:"29.5 Earth years", moons:"280+", dayHrs:10.7, yearDays:10759 },
+      { name:"Uranus",  color:"#8fd0d8", distance:"2.87B km", day:"17.2 hours", year:"84 Earth years", moons:"29", dayHrs:17.2, yearDays:30687 },
+      { name:"Neptune", color:"#4d6fd8", distance:"4.50B km", day:"16.1 hours", year:"165 Earth years", moons:"16", dayHrs:16.1, yearDays:60190 }
+    ];
+
+    planetGrid.innerHTML = planets.map((p,i) => `
+      <div class="planet-card">
+        <div class="p-name"><span class="p-swatch" style="background:${p.color}"></span>${p.name}</div>
+        <div class="p-fact"><span>Distance from Sun</span><span>${p.distance}</span></div>
+        <div class="p-fact"><span>Day length</span><span>${p.day}</span></div>
+        <div class="p-fact"><span>Year length</span><span>${p.year}</span></div>
+        <div class="p-fact" style="border-bottom:none"><span>Known moons</span><span>${p.moons}</span></div>
+        <div class="p-live">
+          <div class="p-live-row"><span>Days elapsed*</span><b id="p-day-${i}">—</b></div>
+          <div class="p-live-row"><span>Years elapsed*</span><b id="p-year-${i}">—</b></div>
+        </div>
+      </div>
+    `).join('') + `<p style="grid-column:1/-1;font-size:11px;color:var(--ink-dim);margin-top:4px">*Since 1 Jan 1970, counted in that planet's own days/years — a fun calculation from real rotation and orbital data, not a NASA-measured figure.</p>`;
+
+    function tickPlanets(){
+      const msSinceEpoch = Date.now();
+      const earthDaysSinceEpoch = msSinceEpoch / 86400000;
+      planets.forEach((p,i) => {
+        const daysEl = document.getElementById('p-day-'+i);
+        const yearsEl = document.getElementById('p-year-'+i);
+        if(!daysEl) return;
+        const planetDays = (earthDaysSinceEpoch * 24) / p.dayHrs;
+        const planetYears = earthDaysSinceEpoch / p.yearDays;
+        daysEl.textContent = Math.floor(planetDays).toLocaleString('en-US');
+        yearsEl.textContent = planetYears.toFixed(2);
+      });
+    }
+    tickPlanets();
+    setInterval(tickPlanets, 1000);
+  }
 })();
+</script>
+
+<!-- ═══════════════════════════════════════════════════
+     FIREBASE — real login / register / dashboard / paper
+     upload. 3 steps to activate:
+
+     1. Go to https://console.firebase.google.com → Add
+        project → name it (e.g. "spacenautics").
+     2. In the project: Build → Authentication → Get
+        started → enable the "Email/Password" sign-in
+        method. Also enable Firestore (Build → Firestore
+        Database → Create database, start in test mode
+        for now — tighten the rules before going public).
+     3. Project settings (gear icon) → General → scroll to
+        "Your apps" → Web app (</> icon) → register it →
+        copy the firebaseConfig object it gives you into
+        FIREBASE_CONFIG below.
+
+     Paper upload additionally needs Cloud Storage, which
+     as of Feb 2026 requires the Blaze (pay-as-you-go)
+     plan on your Firebase project — still free under
+     normal usage, but Google requires a billing card on
+     file. Enable it under Build → Storage. Until you do,
+     login/register/dashboard/papers-list will all work;
+     only the actual file upload button will show an error.
+═══════════════════════════════════════════════════ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import {
+    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    onAuthStateChanged, updateProfile, signOut
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  import {
+    getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+  import {
+    getStorage, ref, uploadBytes, getDownloadURL
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
+
+  // TODO: paste the config object from your Firebase project here.
+  const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyBNavfLEtFra5MF7_BooMQP097CCoSgXOs",
+    authDomain: "spacenautics-c7fd3.firebaseapp.com",
+    projectId: "spacenautics-c7fd3",
+    storageBucket: "spacenautics-c7fd3.firebasestorage.app",
+    messagingSenderId: "157983845158",
+    appId: "1:157983845158:web:1b6580fe22a037965bafe7"
+  };
+
+  const configured = !!FIREBASE_CONFIG.apiKey;
+  const authModal = document.getElementById('auth-modal');
+  const authModalClose = document.getElementById('auth-modal-close');
+  const tabLogin = document.getElementById('tab-login');
+  const tabRegister = document.getElementById('tab-register');
+  const loginForm = document.getElementById('login-form');
+  const registerForm = document.getElementById('register-form');
+  const profilePopBody = document.getElementById('profile-pop-body');
+  const dashGuest = document.getElementById('dash-guest');
+  const dashUser = document.getElementById('dash-user');
+  const dashName = document.getElementById('dash-name');
+  const dashJoined = document.getElementById('dash-joined');
+  const dashCountPapers = document.getElementById('dash-count-papers');
+  const dashLogout = document.getElementById('dash-logout');
+  const paperForm = document.getElementById('paper-form');
+  const paperError = document.getElementById('paper-error');
+  const paperList = document.getElementById('paper-list');
+
+  if(!configured){
+    profilePopBody.innerHTML = 'Firebase isn\'t set up yet — see the comment above the last script block in the file for the 3 setup steps.';
+    tabLogin.disabled = tabRegister.disabled = true;
+  } else {
+    const app = initializeApp(FIREBASE_CONFIG);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    authModalClose.addEventListener('click', () => { authModal.classList.remove('open'); authModal.setAttribute('aria-hidden','true'); });
+    authModal.addEventListener('click', (e) => { if(e.target === authModal){ authModal.classList.remove('open'); authModal.setAttribute('aria-hidden','true'); } });
+    tabLogin.addEventListener('click', () => { tabLogin.classList.add('active'); tabRegister.classList.remove('active'); loginForm.style.display='grid'; registerForm.style.display='none'; });
+    tabRegister.addEventListener('click', () => { tabRegister.classList.add('active'); tabLogin.classList.remove('active'); registerForm.style.display='grid'; loginForm.style.display='none'; });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const errEl = document.getElementById('login-error');
+      errEl.textContent = '';
+      try{
+        await signInWithEmailAndPassword(auth, email, password);
+        authModal.classList.remove('open');
+      }catch(err){ errEl.textContent = err.message.replace('Firebase: ','').replace(/\(auth.*\)/,''); }
+    });
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('register-name').value.trim();
+      const email = document.getElementById('register-email').value.trim();
+      const password = document.getElementById('register-password').value;
+      const errEl = document.getElementById('register-error');
+      errEl.textContent = '';
+      try{
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(cred.user, { displayName: name });
+        authModal.classList.remove('open');
+      }catch(err){ errEl.textContent = err.message.replace('Firebase: ','').replace(/\(auth.*\)/,''); }
+    });
+
+    dashLogout.addEventListener('click', () => signOut(auth));
+
+    // ── Contact form → saved straight to Firestore, no email app needed ──
+    window.__spacenauticsUseFirestore = true;
+    const feedbackForm = document.getElementById('feedback-form');
+    const feedbackResult = document.getElementById('feedback-result');
+    feedbackForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('fb-name').value.trim();
+      const email = document.getElementById('fb-email').value.trim();
+      const message = document.getElementById('fb-message').value.trim();
+      try{
+        await addDoc(collection(db,'messages'), { name, email, message, createdAt: serverTimestamp() });
+        feedbackResult.textContent = 'Thanks — your message has been sent. We\'ll get back to you soon.';
+        feedbackResult.classList.add('show');
+        feedbackForm.reset();
+      }catch(err){
+        feedbackResult.textContent = 'Something went wrong sending your message — please try again in a moment.';
+        feedbackResult.classList.add('show');
+        console.error(err);
+      }
+    });
+
+    async function loadPapers(uid){
+      paperList.innerHTML = '';
+      const q = query(collection(db,'papers'), where('uid','==',uid));
+      const snap = await getDocs(q);
+      if(snap.empty){ paperList.innerHTML = '<li class="empty-note">No papers uploaded yet.</li>'; dashCountPapers.textContent = '0'; return; }
+      dashCountPapers.textContent = snap.size;
+      snap.forEach(docSnap => {
+        const p = docSnap.data();
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${p.title}</span><a href="${p.url}" target="_blank" rel="noopener">Open</a>`;
+        paperList.appendChild(li);
+      });
+    }
+
+    paperForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      paperError.textContent = '';
+      const user = auth.currentUser;
+      if(!user) return;
+      const title = document.getElementById('paper-title').value.trim();
+      const file = document.getElementById('paper-file').files[0];
+      if(!file) return;
+      try{
+        const fileRef = ref(storage, `papers/${user.uid}/${Date.now()}_${file.name}`);
+        await uploadBytes(fileRef, file);
+        const url = await getDownloadURL(fileRef);
+        await addDoc(collection(db,'papers'), { uid: user.uid, title, url, createdAt: serverTimestamp() });
+        paperForm.reset();
+        loadPapers(user.uid);
+      }catch(err){
+        paperError.textContent = "Upload failed — Cloud Storage may need the Blaze plan enabled on your Firebase project (see setup comment near this script).";
+        console.error(err);
+      }
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      window.__spacenauticsUser = user;
+      if(user){
+        const name = user.displayName || user.email.split('@')[0];
+        dashGuest.style.display = 'none';
+        dashUser.style.display = 'block';
+        dashName.textContent = name;
+        const dashAvatar = document.getElementById('dash-avatar');
+        if(dashAvatar) dashAvatar.textContent = name.charAt(0).toUpperCase();
+        dashJoined.textContent = user.metadata.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+        profilePopBody.className = '';
+        profilePopBody.innerHTML = `<span style="color:var(--accent);font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase">Spacenautics · Cadet</span><h4 style="font-family:var(--font-display);font-size:18px;margin:6px 0 12px">${name}</h4><a class="btn" href="#dashboard" style="display:block;text-align:center;padding:9px;font-size:11px;margin-bottom:8px">DASHBOARD</a>`;
+        loadPapers(user.uid);
+      } else {
+        dashGuest.style.display = 'block';
+        dashUser.style.display = 'none';
+        profilePopBody.className = 'empty';
+        profilePopBody.innerHTML = 'Not logged in. Click the profile icon again to log in or register.';
+      }
+    });
+  }
 </script>
 
 </body>
