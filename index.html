@@ -466,7 +466,9 @@
     <span class="scrollto" role="button" tabindex="0" data-target="demo">Demo</span>
     <span class="scrollto" role="button" tabindex="0" data-target="results">Results</span>
     <span class="scrollto" role="button" tabindex="0" data-target="resources">Resources</span>
+    <span class="scrollto" role="button" tabindex="0" data-target="license">License</span>
     <span class="scrollto" role="button" tabindex="0" data-target="hiring">Hiring</span>
+    <span class="scrollto" role="button" tabindex="0" data-target="admin-dashboard" id="adminNavLink" style="display:none;">Admin</span>
     <span class="nav-cta scrollto mobile-only" role="button" tabindex="0" data-target="resources">Explore</span>
   </div>
   <span class="nav-cta scrollto desktop-only" role="button" tabindex="0" data-target="resources">Explore</span>
@@ -474,6 +476,18 @@
 </nav>
 
 <div class="toast" id="toast"></div>
+
+<!-- ============ MODEL-DOWNLOAD USE-CHECK MODAL ============ -->
+<div class="video-modal" id="downloadCheckModal" aria-hidden="true">
+  <div class="video-modal-backdrop" data-close-download></div>
+  <div class="video-modal-inner" style="max-width:420px; background:var(--bg-panel); border-radius:14px; padding:28px; text-align:left;">
+    <button class="video-modal-close" data-close-download aria-label="Close" style="top:-40px;">✕</button>
+    <h3 style="font-size:17px; margin:0 0 10px; color:var(--text);">Quick check before downloading</h3>
+    <p style="font-size:14px; color:var(--text-dim); line-height:1.6; margin:0 0 20px;">Is this for research/personal use, or something commercial?</p>
+    <button class="go" id="dlResearch" style="margin-bottom:10px;">Research / personal — download</button>
+    <button class="go" id="dlCommercial" style="background:var(--bg-panel-2); color:var(--text); border:1px solid var(--line);">Commercial — request permission</button>
+  </div>
+</div>
 
 <!-- ============ HERO (dark, real video background) ============ -->
 <div class="hero">
@@ -798,10 +812,10 @@
       Download the model
       <span class="arrow">↗</span>
     </a>
-    <a class="res-pill" href="./LICENSE.md" target="_blank" rel="noopener">
+    <span class="scrollto res-pill" role="button" tabindex="0" data-target="license">
       License &amp; usage terms
       <span class="arrow">↗</span>
-    </a>
+    </span>
     <a class="res-pill" href="https://github.com/Vikashlkrsrivastav41" target="_blank" rel="noopener">
       View on GitHub
       <span class="arrow">↗</span>
@@ -846,6 +860,37 @@
   </div>
 </section>
 
+<!-- ============ LICENSE ============ -->
+<section id="license">
+  <div class="kicker">License</div>
+  <h2>Free for research. Ask first for commercial.</h2>
+  <p class="lede">Kertory-JEPA is free to use, study, and share for research and personal projects — just credit the work. Using it (or anything built on it) inside something you're selling or monetizing needs written permission first.</p>
+
+  <div class="cite-box">
+    <h3>In short</h3>
+    <p style="font-size:14px; color:var(--text-dim); line-height:1.7; margin:0 0 14px;">
+      ✅ Personal, academic &amp; research use — free, just credit "Kertory-JEPA by Vikash Kumar".<br>
+      ✅ Studying, modifying, and sharing your modifications — free, same credit rule.<br>
+      ❌ Selling it, or using it inside a paid product/service — requires permission (ask below).
+    </p>
+    <a class="res-pill" href="./LICENSE.md" target="_blank" rel="noopener" style="margin:0;">
+      Read the full license text
+      <span class="arrow">↗</span>
+    </a>
+  </div>
+
+  <div class="job-post-form" id="licenseRequestForm" style="margin-top:24px;">
+    <h3 style="font-size:15px; margin:0 0 14px; color:var(--text);">Request commercial permission</h3>
+    <input type="text" id="reqName" placeholder="Your name">
+    <input type="email" id="reqEmail" placeholder="Your email">
+    <input type="text" id="reqCompany" placeholder="Company / project (optional)">
+    <textarea id="reqUse" rows="3" placeholder="How do you want to use Kertory-JEPA commercially?"></textarea>
+    <button class="go" id="reqSubmit">Send request</button>
+    <div class="upload-status" id="reqStatus"></div>
+    <p class="lede" style="font-size:12px; margin-top:10px;">Goes straight to the author. You'll hear back by email — no automatic approval.</p>
+  </div>
+</section>
+
 <!-- ============ HIRING ============ -->
 <section id="hiring">
   <div class="kicker">Careers</div>
@@ -873,6 +918,19 @@
     <button class="go" id="jobPostGo">Post role</button>
     <div class="upload-status" id="jobPostStatus"></div>
   </div>
+</section>
+
+<!-- ============ ADMIN DASHBOARD (hidden unless signed in as admin) ============ -->
+<section id="admin-dashboard" style="display:none;">
+  <div class="kicker">Admin only</div>
+  <h2>Requests &amp; applications.</h2>
+  <p class="lede">Everything submitted through the site, in one place — no need to open the Firebase console.</p>
+
+  <h3 style="margin-top:40px; font-size:17px; color:var(--text);">Commercial license requests</h3>
+  <div id="adminLicenseList" class="jobs-list"><div class="jobs-empty">Loading…</div></div>
+
+  <h3 style="margin-top:40px; font-size:17px; color:var(--text);">Job applications</h3>
+  <div id="adminApplicationsList" class="jobs-list"><div class="jobs-empty">Loading…</div></div>
 </section>
 
 <footer>
@@ -1238,6 +1296,85 @@ ASSET_DOC.get().then(function(doc){
   }, { passive: true });
 })();
 
+// Model download: quick research-vs-commercial check before letting the file download.
+(function(){
+  var link = document.getElementById('modelLink');
+  var modal = document.getElementById('downloadCheckModal');
+  var researchBtn = document.getElementById('dlResearch');
+  var commercialBtn = document.getElementById('dlCommercial');
+  if(!link || !modal) return;
+
+  function closeModal(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+
+  link.addEventListener('click', function(e){
+    e.preventDefault();
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+  });
+
+  researchBtn.addEventListener('click', function(){
+    closeModal();
+    var a = document.createElement('a');
+    a.href = link.getAttribute('href');
+    a.target = '_blank';
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  });
+
+  commercialBtn.addEventListener('click', function(){
+    closeModal();
+    var target = document.getElementById('license');
+    if(target){ target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    showToast('Fill out the request form below — you\'ll hear back before downloading for commercial use.');
+    var nameField = document.getElementById('reqName');
+    if(nameField){ setTimeout(function(){ nameField.focus(); }, 500); }
+  });
+
+  modal.querySelectorAll('[data-close-download]').forEach(function(el){
+    el.addEventListener('click', closeModal);
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && modal.classList.contains('open')){ closeModal(); }
+  });
+})();
+
+// License: commercial-use permission request form → saved to Firestore for the admin to review.
+(function(){
+  var submitBtn = document.getElementById('reqSubmit');
+  if(!submitBtn) return;
+  submitBtn.addEventListener('click', function(){
+    var name = document.getElementById('reqName').value.trim();
+    var email = document.getElementById('reqEmail').value.trim();
+    var company = document.getElementById('reqCompany').value.trim();
+    var useCase = document.getElementById('reqUse').value.trim();
+    var status = document.getElementById('reqStatus');
+
+    if(!name || !email || !useCase){
+      status.textContent = 'Please fill in your name, email, and intended use.';
+      return;
+    }
+    status.textContent = 'Sending…';
+    db.collection('licenseRequests').add({
+      name: name, email: email, company: company, useCase: useCase,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function(){
+      status.textContent = 'Sent — you\'ll hear back by email.';
+      document.getElementById('reqName').value = '';
+      document.getElementById('reqEmail').value = '';
+      document.getElementById('reqCompany').value = '';
+      document.getElementById('reqUse').value = '';
+      showToast('Request sent. Thanks for asking first!');
+    }).catch(function(err){
+      status.textContent = 'Could not send: ' + err.message;
+    });
+  });
+})();
+
 // Copy-to-clipboard for the BibTeX citation.
 (function(){
   var btn = document.getElementById('citeCopy');
@@ -1437,6 +1574,96 @@ ASSET_DOC.get().then(function(doc){
       });
     });
   }
+})();
+
+// Admin dashboard: shows license requests + job applications, live, admin-only.
+// No console needed — everything submitted through the site shows up here once signed in as admin.
+(function(){
+  var section = document.getElementById('admin-dashboard');
+  var navLink = document.getElementById('adminNavLink');
+  var licenseList = document.getElementById('adminLicenseList');
+  var appsList = document.getElementById('adminApplicationsList');
+  if(!section) return;
+
+  function escapeHtml(s){
+    return String(s || '').replace(/[&<>"']/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+  function fmtTime(ts){
+    if(!ts || !ts.toDate) return '';
+    return ts.toDate().toLocaleString();
+  }
+
+  var unsubLicense, unsubApps;
+
+  function renderLicenseRequests(snapshot){
+    if(snapshot.empty){
+      licenseList.innerHTML = '<div class="jobs-empty">No requests yet.</div>';
+      return;
+    }
+    licenseList.innerHTML = '';
+    snapshot.forEach(function(doc){
+      var r = doc.data();
+      var card = document.createElement('div');
+      card.className = 'job-card in';
+      card.innerHTML =
+        '<div class="job-card-top">' +
+          '<div><b>' + escapeHtml(r.name) + '</b>' +
+          '<div class="job-meta">' + escapeHtml(r.email) + (r.company ? ' · ' + escapeHtml(r.company) : '') + ' · ' + fmtTime(r.createdAt) + '</div></div>' +
+          '<div class="job-actions"><button class="job-remove-btn" data-del-license="' + doc.id + '">Delete</button></div>' +
+        '</div>' +
+        '<p>' + escapeHtml(r.useCase) + '</p>';
+      licenseList.appendChild(card);
+    });
+  }
+
+  function renderApplications(snapshot){
+    if(snapshot.empty){
+      appsList.innerHTML = '<div class="jobs-empty">No applications yet.</div>';
+      return;
+    }
+    appsList.innerHTML = '';
+    snapshot.forEach(function(doc){
+      var a = doc.data();
+      var card = document.createElement('div');
+      card.className = 'job-card in';
+      card.innerHTML =
+        '<div class="job-card-top">' +
+          '<div><b>' + escapeHtml(a.name || a.email) + '</b>' +
+          '<div class="job-meta">' + escapeHtml(a.email) + ' · role: ' + escapeHtml(a.jobId) + ' · ' + fmtTime(a.createdAt) + '</div></div>' +
+          '<div class="job-actions"><button class="job-remove-btn" data-del-app="' + doc.id + '">Delete</button></div>' +
+        '</div>' +
+        '<p>' + escapeHtml(a.message || '(no message)') + '</p>';
+      appsList.appendChild(card);
+    });
+  }
+
+  licenseList.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-del-license]');
+    if(btn && isAdmin()){ db.collection('licenseRequests').doc(btn.dataset.delLicense).delete(); }
+  });
+  appsList.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-del-app]');
+    if(btn && isAdmin()){ APPLICATIONS_COL.doc(btn.dataset.delApp).delete(); }
+  });
+
+  auth.onAuthStateChanged(function(){
+    var admin = isAdmin();
+    section.style.display = admin ? 'block' : 'none';
+    navLink.style.display = admin ? '' : 'none';
+
+    if(admin && !unsubLicense){
+      unsubLicense = db.collection('licenseRequests').orderBy('createdAt', 'desc')
+        .onSnapshot(renderLicenseRequests, function(err){ licenseList.innerHTML = '<div class="jobs-empty">' + escapeHtml(err.message) + '</div>'; });
+      unsubApps = APPLICATIONS_COL.orderBy('createdAt', 'desc')
+        .onSnapshot(renderApplications, function(err){ appsList.innerHTML = '<div class="jobs-empty">' + escapeHtml(err.message) + '</div>'; });
+    }
+    if(!admin && unsubLicense){
+      unsubLicense(); unsubApps();
+      unsubLicense = null; unsubApps = null;
+    }
+  });
 })();
 </script>
 
