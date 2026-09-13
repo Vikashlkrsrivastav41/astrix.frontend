@@ -344,12 +344,11 @@
   }
   .job-post-row{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 
-  /* ---------- ACCOUNT / SIGN-IN PANEL (Google + GitHub, for applying to roles) ---------- */
+  /* ---------- ACCOUNT / SIGN-IN BUTTON (Google + GitHub, for applying to roles) — lives inside nav, not floating ---------- */
   .account-fab{
-    position:fixed; top:18px; right:22px; z-index:95;
-    padding:9px 18px; border-radius:24px; border:1px solid var(--line);
-    background:var(--bg-panel); color:var(--text); font-size:13px; cursor:pointer;
-    box-shadow:0 4px 14px rgba(0,0,0,0.3); transition:transform .15s;
+    padding:8px 16px; border-radius:20px; border:1px solid var(--line);
+    background:var(--bg-panel); color:var(--text); font-size:12.5px; cursor:pointer;
+    margin-left:14px; transition:transform .15s; white-space:nowrap;
   }
   .account-fab:hover{ transform:translateY(-1px); }
   @media (max-width:860px){ .account-fab{ display:none; } }
@@ -397,6 +396,16 @@
   /* ---------- NAV SCROLL-SPY ---------- */
   .nav-links .scrollto.current{ color:var(--text); font-weight:600; }
   .nav-links .scrollto.current::after{ content:''; display:block; height:2px; background:var(--blue); margin-top:4px; }
+
+  /* ---------- TOAST (confirmation after actions like sign-in) ---------- */
+  .toast{
+    position:fixed; left:50%; bottom:28px; z-index:120; transform:translate(-50%, 16px);
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:12px;
+    padding:13px 20px; font-size:13.5px; color:var(--text); box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+    max-width:calc(100vw - 44px); text-align:center;
+  }
+  .toast.show{ opacity:1; transform:translate(-50%, 0); }
 
   /* ---------- CITATION BOX ---------- */
   .cite-box{ margin-top:40px; background:var(--bg-panel); border:1px solid var(--line); border-radius:14px; padding:24px 26px; }
@@ -461,7 +470,10 @@
     <span class="nav-cta scrollto mobile-only" role="button" tabindex="0" data-target="resources">Explore</span>
   </div>
   <span class="nav-cta scrollto desktop-only" role="button" tabindex="0" data-target="resources">Explore</span>
+  <button class="account-fab" id="accountFab">Sign in</button>
 </nav>
+
+<div class="toast" id="toast"></div>
 
 <!-- ============ HERO (dark, real video background) ============ -->
 <div class="hero">
@@ -866,7 +878,6 @@
 
 <!-- ============ UPLOAD PANEL — replaces any asset on the page and saves it to Firebase ============ -->
 <!-- ============ ACCOUNT (Google / GitHub) — for signing in to apply to open roles ============ -->
-<button class="account-fab" id="accountFab">Sign in</button>
 <div class="upload-panel top-panel" id="accountPanel">
   <div id="accountLoggedOut">
     <h4>Sign in to apply</h4>
@@ -923,6 +934,16 @@
 
 
 <script>
+// Small confirmation banner, used after actions like signing in.
+function showToast(message, duration){
+  var el = document.getElementById('toast');
+  if(!el) return;
+  el.textContent = message;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(function(){ el.classList.remove('show'); }, duration || 3500);
+}
+
 // Reuse the nav logo image as the favicon, instead of duplicating the base64 data.
 (function(){
   var logo = document.querySelector('.nav-logo');
@@ -1276,12 +1297,18 @@ ASSET_DOC.get().then(function(doc){
   auth.onAuthStateChanged(render);
 
   googleBtn.addEventListener('click', function(){
-    auth.signInWithPopup(googleProvider).then(function(){ open = false; render(); })
-      .catch(function(e){ alert(e.message); });
+    auth.signInWithPopup(googleProvider).then(function(result){
+      open = false; render();
+      var name = (result.user.displayName || result.user.email || '').split(' ')[0];
+      showToast('Signed in as ' + name + ' — scroll to Hiring to apply for open roles.');
+    }).catch(function(e){ alert(e.message); });
   });
   githubBtn.addEventListener('click', function(){
-    auth.signInWithPopup(githubProvider).then(function(){ open = false; render(); })
-      .catch(function(e){ alert(e.message); });
+    auth.signInWithPopup(githubProvider).then(function(result){
+      open = false; render();
+      var name = (result.user.displayName || result.user.email || '').split(' ')[0];
+      showToast('Signed in as ' + name + ' — scroll to Hiring to apply for open roles.');
+    }).catch(function(e){ alert(e.message); });
   });
   signOutLink.addEventListener('click', function(){ auth.signOut().then(render); });
 })();
