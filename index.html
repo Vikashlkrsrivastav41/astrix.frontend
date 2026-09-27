@@ -16,6 +16,23 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCh3fCM_KOYMJntpsaKh5Hmv_ECCRM0pKE",
+    authDomain: "kertory-4deb3.firebaseapp.com",
+    projectId: "kertory-4deb3",
+    storageBucket: "kertory-4deb3.firebasestorage.app",
+    messagingSenderId: "1024698439294",
+    appId: "1:1024698439294:web:911b00d412ab61dd13aa2f",
+    measurementId: "G-CH6JNG2M8L"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  getAnalytics(app);
+</script>
 <style>
   :root{
     /* light body (matches Meta's actual page) */
@@ -1114,12 +1131,13 @@ document.querySelectorAll('.scrollto').forEach(function(el){
 // every visitor, no re-uploading of files to the server needed.
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCTpNHBkvj3X04__V9bRV-2PuDpSymSkPs",
-  authDomain: "amtc-4a47e.firebaseapp.com",
-  projectId: "amtc-4a47e",
-  storageBucket: "amtc-4a47e.firebasestorage.app",
-  messagingSenderId: "508101093482",
-  appId: "1:508101093482:web:9ca0213769254f63d88213"
+  apiKey: "AIzaSyCh3fCM_KOYMJntpsaKh5Hmv_ECCRM0pKE",
+  authDomain: "kertory-4deb3.firebaseapp.com",
+  projectId: "kertory-4deb3",
+  storageBucket: "kertory-4deb3.firebasestorage.app",
+  messagingSenderId: "1024698439294",
+  appId: "1:1024698439294:web:911b00d412ab61dd13aa2f",
+  measurementId: "G-CH6JNG2M8L"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
