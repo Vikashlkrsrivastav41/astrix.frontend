@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service — Kertory-JEPA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg-panel:#f5f6f8; --bg-panel-2:#eceef2; --line:#e2e5ea;
+    --blue:#0a63f7; --text:#16202b; --text-dim:#57626f; --text-faint:#8a93a1;
+    --mono:'JetBrains Mono','SF Mono',ui-monospace,Consolas,monospace;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:radial-gradient(1100px 550px at 12% -8%, rgba(10,99,247,0.045), transparent 60%),
+               radial-gradient(1100px 550px at 88% 108%, rgba(10,99,247,0.035), transparent 60%), var(--bg);
+    color:var(--text); font-family:var(--sans); line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  a{ color:var(--blue); }
+  nav{
+    display:flex; align-items:center; gap:10px; padding:18px 48px;
+    border-bottom:1px solid var(--line); font-weight:700;
+  }
+  nav a{ color:var(--text); text-decoration:none; font-size:14px; }
+  .container{ max-width:760px; margin:0 auto; padding:64px 24px 100px; }
+  .legal-badge{
+    display:inline-block; font-family:var(--mono); font-size:11.5px; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--text-dim); border:1px solid var(--line);
+    border-radius:8px; padding:5px 12px; margin-bottom:24px;
+  }
+  h1{ font-size:clamp(36px,6vw,58px); font-weight:800; letter-spacing:-0.03em; line-height:1.05; }
+  .updated{ color:var(--text-faint); font-size:14.5px; margin-top:14px; }
+  .toc{ margin-top:48px; background:var(--bg-panel); border:1px solid var(--line); border-radius:12px; padding:24px 28px; }
+  .toc-label{ font-family:var(--mono); font-size:11.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-faint); margin-bottom:14px; }
+  .toc ol{ list-style:none; counter-reset:toc; }
+  .toc li{ counter-increment:toc; margin-bottom:9px; font-size:14.5px; }
+  .toc li a{ color:var(--text-dim); text-decoration:none; }
+  .toc li a:hover{ color:var(--text); }
+  .toc li::before{ content:counter(toc) ". "; color:var(--text-faint); font-family:var(--mono); }
+  section{ margin-top:48px; scroll-margin-top:24px; }
+  section h2{ font-size:22px; font-weight:700; margin-bottom:14px; letter-spacing:-0.01em; }
+  section p, section li{ color:var(--text-dim); font-size:15px; margin-bottom:12px; }
+  section ul{ padding-left:22px; }
+  .back{ display:inline-block; margin-top:64px; font-size:14px; color:var(--text-dim); text-decoration:none; }
+  .back:hover{ color:var(--text); }
+</style>
+</head>
+<body>
+
+<nav><a href="./">← Kertory-JEPA</a></nav>
+
+<div class="container">
+  <span class="legal-badge">Legal</span>
+  <h1>Terms of Service</h1>
+  <div class="updated">Updated October 3, 2026</div>
+  <div class="updated" style="margin-top:4px;">Kertory-JEPA — CEO &amp; Founder: Vikash Kumar</div>
+
+  <div class="toc">
+    <div class="toc-label">Table of contents</div>
+    <ol>
+      <li><a href="#services">The site &amp; services</a></li>
+      <li><a href="#accounts">Accounts &amp; sign-in</a></li>
+      <li><a href="#model-license">The model, code &amp; license</a></li>
+      <li><a href="#hiring">Job postings &amp; applications</a></li>
+      <li><a href="#license-requests">Commercial license requests</a></li>
+      <li><a href="#restrictions">Restrictions</a></li>
+      <li><a href="#ip">Intellectual property</a></li>
+      <li><a href="#disclaimers">Disclaimers &amp; no warranty</a></li>
+      <li><a href="#liability">Limitation of liability</a></li>
+      <li><a href="#termination">Termination</a></li>
+      <li><a href="#changes">Changes to these terms</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+  </div>
+
+  <section id="services">
+    <h2>1. The site &amp; services</h2>
+    <p>This website ("the Site") is operated by Vikash Kumar, CEO &amp; Founder, as an independent research project under the name Kertory-JEPA. The Site presents research results, a downloadable model, a live demo, and a small job board for the project. By using the Site, you agree to these Terms.</p>
+  </section>
+
+  <section id="accounts">
+    <h2>2. Accounts &amp; sign-in</h2>
+    <p>Some features — applying to a role, requesting commercial permission — are available without signing in, while applying to a posted role requires signing in with Google or GitHub. Administrative features are restricted to the project's own admin account. You're responsible for keeping any account you sign in with secure; we don't control Google's or GitHub's own terms, which continue to apply to your use of their sign-in service.</p>
+  </section>
+
+  <section id="model-license">
+    <h2>3. The model, code &amp; license</h2>
+    <p>The Kertory-JEPA model, code, weights, and documentation are made available under a separate <a href="./LICENSE.md">license</a>, not under these Terms. In short: free for research and personal use with credit; commercial use requires written permission first. Where the license and these Terms differ on use of the model/code itself, the license controls.</p>
+  </section>
+
+  <section id="hiring">
+    <h2>4. Job postings &amp; applications</h2>
+    <p>Roles shown on the Site reflect real openings on this project as they come up. Submitting an application sends your name, email, and message to the project for review. There's no automated acceptance — all applications are reviewed manually, and we don't guarantee a response time.</p>
+  </section>
+
+  <section id="license-requests">
+    <h2>5. Commercial license requests</h2>
+    <p>Submitting a commercial-use request sends your name, email, company (if given), and intended use to the project for review. This does not itself grant permission — commercial use still requires an explicit, separate written approval as described in the license.</p>
+  </section>
+
+  <section id="restrictions">
+    <h2>6. Restrictions</h2>
+    <ul>
+      <li>Don't use the Site to submit false, abusive, or spam content through the job or license-request forms.</li>
+      <li>Don't attempt to access admin-only areas, upload capabilities, or another user's submitted data.</li>
+      <li>Don't use the model or code in a way that violates its license.</li>
+    </ul>
+  </section>
+
+  <section id="ip">
+    <h2>7. Intellectual property</h2>
+    <p>The research write-ups, design, and branding on this Site belong to the project. The model and code are covered separately by the <a href="./LICENSE.md">license</a>. Reference material (video clips, images) used on the Site is credited to its original creators where shown, under the free-use terms of its source.</p>
+  </section>
+
+  <section id="disclaimers">
+    <h2>8. Disclaimers &amp; no warranty</h2>
+    <p>The Site, the model, and all research results are provided "as is," without warranty of any kind, express or implied. This is an independent, ongoing research project — reported results reflect what was actually measured at the time, including negative and partial results, but no outcome is guaranteed for any particular use.</p>
+  </section>
+
+  <section id="liability">
+    <h2>9. Limitation of liability</h2>
+    <p>To the fullest extent permitted by law, the project and its founder aren't liable for any indirect, incidental, or consequential damages arising from use of the Site, the model, or any content obtained through it.</p>
+  </section>
+
+  <section id="termination">
+    <h2>10. Termination</h2>
+    <p>Access to sign-in features, job applications, or admin tools may be restricted or removed for anyone who violates these Terms or the license, without prior notice.</p>
+  </section>
+
+  <section id="changes">
+    <h2>11. Changes to these terms</h2>
+    <p>These Terms may be updated as the Site and project evolve. Continued use of the Site after a change means you accept the updated Terms.</p>
+  </section>
+
+  <section id="contact">
+    <h2>12. Contact</h2>
+    <p>Questions about these Terms can be sent via the "Send feedback" link in the Site's Resources section, or directly by email.</p>
+  </section>
+
+  <a class="back" href="./">← Back to Kertory-JEPA</a>
+</div>
+
+</body>
+</html>
